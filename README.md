@@ -1,0 +1,1 @@
+run java -jar java-cup-11b.jar -dump_tables <filename>.cup to create parser.java, sym.java and dump LALR tables
