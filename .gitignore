@@ -1,3 +1,4 @@
 javacup/*
 java-cup-11b-runtime.jar
 java-cup-11b.jar
+*.class

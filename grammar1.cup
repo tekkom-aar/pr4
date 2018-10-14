@@ -1,0 +1,36 @@
+/* Simple +/-/* expression language; parser evaluates constant expressions on the fly*/
+import java_cup.runtime.*;
+
+parser code {:
+    // Connect this parser to a scanner!
+    scanner s;
+    Parser(scanner s){ this.s=s; }
+:}
+
+/* define how to connect to the scanner! */
+init with {: s.init(); :};
+scan with {: return s.next_token(); :};
+
+/* Terminals (tokens returned by the scanner). */
+terminal            SEMICOLON, PLUS, MINUS, TIMES, OPEN_BRACKET, CLOSE_BRACKET;
+terminal Integer    NUMBER;
+
+// terminal
+non terminal            expr_list;
+non terminal Integer    expr;
+
+
+//precedence
+precedence left PLUS, MINUS, TIMES;
+
+// rules
+expr_list ::= expr_list expr:e SEMICOLON         {: System.out.println(e);:}
+            | expr:e SEMICOLON                   {: System.out.println(e);:}
+;
+
+expr      ::= expr:e1 PLUS  expr:e2                 {: RESULT = e1+e2;       :}
+            | expr:e1 MINUS expr:e2                 {: RESULT = e1-e2;       :}
+            | expr:e1 TIMES expr:e2                 {: RESULT = e1*e2;       :}
+            | OPEN_BRACKET expr:e CLOSE_BRACKET     {: RESULT = e;           :}
+            | NUMBER:n	                            {: RESULT = n;           :}
+;
