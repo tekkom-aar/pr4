@@ -1,0 +1,24 @@
+import java_cup.runtime.*;
+
+terminal PLUS, MINUS, TIMES, OPEN_BRACKET, CLOSE_BRACKET;
+terminal integer NUMBER;
+
+non terminal E, T, F;
+
+precedence left PLUS, MINUS;
+precedence left TIMES;
+precedence left OPEN_BRACKET, CLOSE_BRACKET;
+
+// rules
+E ::= E:e PLUS T:t
+    |  E:e MINUS T:t
+    |  T:t
+;
+
+T ::= T:t TIMES F:f
+    | F:f
+;
+
+F ::= OPEN_BRACKET E:e CLOSE_BRACKET
+    | NUMBER:n
+;

@@ -1,0 +1,15 @@
+import java_cup.runtime.*;
+
+terminal PLUS, MINUS, TIMES, OPEN_BRACKET, CLOSE_BRACKET;
+
+non terminal E;
+
+precedence left PLUS, MINUS;
+precedence left TIMES;
+precedence left OPEN_BRACKET, CLOSE_BRACKET;
+
+E ::= E PLUS E
+    | E MINUS E
+    | E TIMES E
+    | OPEN_BRACKET E CLOSE_BRACKET
+;
