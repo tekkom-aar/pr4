@@ -1,6 +1,7 @@
 import java_cup.runtime.*;
 
 terminal PLUS, MINUS, TIMES, OPEN_BRACKET, CLOSE_BRACKET;
+terminal integer NUMBER;
 
 non terminal E;
 
@@ -12,4 +13,5 @@ E ::= E PLUS E
     | E MINUS E
     | E TIMES E
     | OPEN_BRACKET E CLOSE_BRACKET
+    | NUMBER
 ;

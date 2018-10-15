@@ -1,54 +1,223 @@
+===== Terminals =====
+[0]EOF [1]error [2]PLUS [3]MINUS [4]TIMES 
+[5]OPEN_BRACKET [6]CLOSE_BRACKET [7]NUMBER 
+
+===== Non terminals =====
+[0]E 
+
+===== Productions =====
+[0] E ::= E PLUS E 
+[1] $START ::= E EOF 
+[2] E ::= E MINUS E 
+[3] E ::= E TIMES E 
+[4] E ::= OPEN_BRACKET E CLOSE_BRACKET 
+[5] E ::= NUMBER 
+
+===== Viable Prefix Recognizer =====
+START lalr_state [0]: {
+  [E ::= (*) NUMBER , {EOF PLUS MINUS TIMES }]
+  [E ::= (*) E MINUS E , {EOF PLUS MINUS TIMES }]
+  [E ::= (*) OPEN_BRACKET E CLOSE_BRACKET , {EOF PLUS MINUS TIMES }]
+  [$START ::= (*) E EOF , {EOF }]
+  [E ::= (*) E TIMES E , {EOF PLUS MINUS TIMES }]
+  [E ::= (*) E PLUS E , {EOF PLUS MINUS TIMES }]
+}
+transition on E to state [3]
+transition on NUMBER to state [2]
+transition on OPEN_BRACKET to state [1]
+
+-------------------
+lalr_state [1]: {
+  [E ::= (*) NUMBER , {PLUS MINUS TIMES CLOSE_BRACKET }]
+  [E ::= (*) E MINUS E , {PLUS MINUS TIMES CLOSE_BRACKET }]
+  [E ::= OPEN_BRACKET (*) E CLOSE_BRACKET , {EOF PLUS MINUS TIMES CLOSE_BRACKET }]
+  [E ::= (*) OPEN_BRACKET E CLOSE_BRACKET , {PLUS MINUS TIMES CLOSE_BRACKET }]
+  [E ::= (*) E TIMES E , {PLUS MINUS TIMES CLOSE_BRACKET }]
+  [E ::= (*) E PLUS E , {PLUS MINUS TIMES CLOSE_BRACKET }]
+}
+transition on E to state [11]
+transition on NUMBER to state [2]
+transition on OPEN_BRACKET to state [1]
+
+-------------------
+lalr_state [2]: {
+  [E ::= NUMBER (*) , {EOF PLUS MINUS TIMES CLOSE_BRACKET }]
+}
+
+-------------------
+lalr_state [3]: {
+  [E ::= E (*) MINUS E , {EOF PLUS MINUS TIMES }]
+  [$START ::= E (*) EOF , {EOF }]
+  [E ::= E (*) TIMES E , {EOF PLUS MINUS TIMES }]
+  [E ::= E (*) PLUS E , {EOF PLUS MINUS TIMES }]
+}
+transition on EOF to state [7]
+transition on TIMES to state [6]
+transition on MINUS to state [5]
+transition on PLUS to state [4]
+
+-------------------
+lalr_state [4]: {
+  [E ::= (*) NUMBER , {EOF PLUS MINUS TIMES CLOSE_BRACKET }]
+  [E ::= (*) E MINUS E , {EOF PLUS MINUS TIMES CLOSE_BRACKET }]
+  [E ::= (*) OPEN_BRACKET E CLOSE_BRACKET , {EOF PLUS MINUS TIMES CLOSE_BRACKET }]
+  [E ::= E PLUS (*) E , {EOF PLUS MINUS TIMES CLOSE_BRACKET }]
+  [E ::= (*) E TIMES E , {EOF PLUS MINUS TIMES CLOSE_BRACKET }]
+  [E ::= (*) E PLUS E , {EOF PLUS MINUS TIMES CLOSE_BRACKET }]
+}
+transition on E to state [10]
+transition on NUMBER to state [2]
+transition on OPEN_BRACKET to state [1]
+
+-------------------
+lalr_state [5]: {
+  [E ::= E MINUS (*) E , {EOF PLUS MINUS TIMES CLOSE_BRACKET }]
+  [E ::= (*) NUMBER , {EOF PLUS MINUS TIMES CLOSE_BRACKET }]
+  [E ::= (*) E MINUS E , {EOF PLUS MINUS TIMES CLOSE_BRACKET }]
+  [E ::= (*) OPEN_BRACKET E CLOSE_BRACKET , {EOF PLUS MINUS TIMES CLOSE_BRACKET }]
+  [E ::= (*) E TIMES E , {EOF PLUS MINUS TIMES CLOSE_BRACKET }]
+  [E ::= (*) E PLUS E , {EOF PLUS MINUS TIMES CLOSE_BRACKET }]
+}
+transition on E to state [9]
+transition on NUMBER to state [2]
+transition on OPEN_BRACKET to state [1]
+
+-------------------
+lalr_state [6]: {
+  [E ::= (*) NUMBER , {EOF PLUS MINUS TIMES CLOSE_BRACKET }]
+  [E ::= (*) E MINUS E , {EOF PLUS MINUS TIMES CLOSE_BRACKET }]
+  [E ::= (*) OPEN_BRACKET E CLOSE_BRACKET , {EOF PLUS MINUS TIMES CLOSE_BRACKET }]
+  [E ::= E TIMES (*) E , {EOF PLUS MINUS TIMES CLOSE_BRACKET }]
+  [E ::= (*) E TIMES E , {EOF PLUS MINUS TIMES CLOSE_BRACKET }]
+  [E ::= (*) E PLUS E , {EOF PLUS MINUS TIMES CLOSE_BRACKET }]
+}
+transition on E to state [8]
+transition on NUMBER to state [2]
+transition on OPEN_BRACKET to state [1]
+
+-------------------
+lalr_state [7]: {
+  [$START ::= E EOF (*) , {EOF }]
+}
+
+-------------------
+lalr_state [8]: {
+  [E ::= E (*) MINUS E , {EOF PLUS MINUS TIMES CLOSE_BRACKET }]
+  [E ::= E TIMES E (*) , {EOF PLUS MINUS TIMES CLOSE_BRACKET }]
+  [E ::= E (*) TIMES E , {EOF PLUS MINUS TIMES CLOSE_BRACKET }]
+  [E ::= E (*) PLUS E , {EOF PLUS MINUS TIMES CLOSE_BRACKET }]
+}
+transition on TIMES to state [6]
+transition on MINUS to state [5]
+transition on PLUS to state [4]
+
+-------------------
+lalr_state [9]: {
+  [E ::= E (*) MINUS E , {EOF PLUS MINUS TIMES CLOSE_BRACKET }]
+  [E ::= E (*) TIMES E , {EOF PLUS MINUS TIMES CLOSE_BRACKET }]
+  [E ::= E (*) PLUS E , {EOF PLUS MINUS TIMES CLOSE_BRACKET }]
+  [E ::= E MINUS E (*) , {EOF PLUS MINUS TIMES CLOSE_BRACKET }]
+}
+transition on TIMES to state [6]
+transition on MINUS to state [5]
+transition on PLUS to state [4]
+
+-------------------
+lalr_state [10]: {
+  [E ::= E (*) MINUS E , {EOF PLUS MINUS TIMES CLOSE_BRACKET }]
+  [E ::= E PLUS E (*) , {EOF PLUS MINUS TIMES CLOSE_BRACKET }]
+  [E ::= E (*) TIMES E , {EOF PLUS MINUS TIMES CLOSE_BRACKET }]
+  [E ::= E (*) PLUS E , {EOF PLUS MINUS TIMES CLOSE_BRACKET }]
+}
+transition on TIMES to state [6]
+transition on MINUS to state [5]
+transition on PLUS to state [4]
+
+-------------------
+lalr_state [11]: {
+  [E ::= E (*) MINUS E , {PLUS MINUS TIMES CLOSE_BRACKET }]
+  [E ::= OPEN_BRACKET E (*) CLOSE_BRACKET , {EOF PLUS MINUS TIMES CLOSE_BRACKET }]
+  [E ::= E (*) TIMES E , {PLUS MINUS TIMES CLOSE_BRACKET }]
+  [E ::= E (*) PLUS E , {PLUS MINUS TIMES CLOSE_BRACKET }]
+}
+transition on TIMES to state [6]
+transition on MINUS to state [5]
+transition on CLOSE_BRACKET to state [12]
+transition on PLUS to state [4]
+
+-------------------
+lalr_state [12]: {
+  [E ::= OPEN_BRACKET E CLOSE_BRACKET (*) , {EOF PLUS MINUS TIMES CLOSE_BRACKET }]
+}
+
+-------------------
 -------- ACTION_TABLE --------
 From state #0
- [term 5:SHIFT(to state 1)]
+ [term 5:SHIFT(to state 1)] [term 7:SHIFT(to state 2)]
 From state #1
- [term 5:SHIFT(to state 1)]
+ [term 5:SHIFT(to state 1)] [term 7:SHIFT(to state 2)]
 From state #2
- [term 0:SHIFT(to state 6)] [term 2:SHIFT(to state 3)]
- [term 3:SHIFT(to state 4)] [term 4:SHIFT(to state 5)]
+ [term 0:REDUCE(with prod 5)] [term 2:REDUCE(with prod 5)]
+ [term 3:REDUCE(with prod 5)] [term 4:REDUCE(with prod 5)]
+ [term 6:REDUCE(with prod 5)]
 From state #3
- [term 5:SHIFT(to state 1)]
+ [term 0:SHIFT(to state 7)] [term 2:SHIFT(to state 4)]
+ [term 3:SHIFT(to state 5)] [term 4:SHIFT(to state 6)]
 From state #4
- [term 5:SHIFT(to state 1)]
+ [term 5:SHIFT(to state 1)] [term 7:SHIFT(to state 2)]
 From state #5
- [term 5:SHIFT(to state 1)]
+ [term 5:SHIFT(to state 1)] [term 7:SHIFT(to state 2)]
 From state #6
- [term 0:REDUCE(with prod 1)]
+ [term 5:SHIFT(to state 1)] [term 7:SHIFT(to state 2)]
 From state #7
+ [term 0:REDUCE(with prod 1)]
+From state #8
  [term 0:REDUCE(with prod 3)] [term 2:REDUCE(with prod 3)]
  [term 3:REDUCE(with prod 3)] [term 4:REDUCE(with prod 3)]
  [term 6:REDUCE(with prod 3)]
-From state #8
- [term 0:REDUCE(with prod 2)] [term 2:REDUCE(with prod 2)]
- [term 3:REDUCE(with prod 2)] [term 4:SHIFT(to state 5)]
- [term 6:REDUCE(with prod 2)]
 From state #9
- [term 0:REDUCE(with prod 0)] [term 2:REDUCE(with prod 0)]
- [term 3:REDUCE(with prod 0)] [term 4:SHIFT(to state 5)]
- [term 6:REDUCE(with prod 0)]
+ [term 0:REDUCE(with prod 2)] [term 2:REDUCE(with prod 2)]
+ [term 3:REDUCE(with prod 2)] [term 4:SHIFT(to state 6)]
+ [term 6:REDUCE(with prod 2)]
 From state #10
- [term 2:SHIFT(to state 3)] [term 3:SHIFT(to state 4)]
- [term 4:SHIFT(to state 5)] [term 6:SHIFT(to state 11)]
+ [term 0:REDUCE(with prod 0)] [term 2:REDUCE(with prod 0)]
+ [term 3:REDUCE(with prod 0)] [term 4:SHIFT(to state 6)]
+ [term 6:REDUCE(with prod 0)]
 From state #11
+ [term 2:SHIFT(to state 4)] [term 3:SHIFT(to state 5)]
+ [term 4:SHIFT(to state 6)] [term 6:SHIFT(to state 12)]
+From state #12
  [term 0:REDUCE(with prod 4)] [term 2:REDUCE(with prod 4)]
  [term 3:REDUCE(with prod 4)] [term 4:REDUCE(with prod 4)]
  [term 6:REDUCE(with prod 4)]
 ------------------------------
 -------- REDUCE_TABLE --------
 From state #0
- [non term 0->state 2]
+ [non term 0->state 3]
 From state #1
- [non term 0->state 10]
+ [non term 0->state 11]
 From state #2
 From state #3
- [non term 0->state 9]
 From state #4
- [non term 0->state 8]
+ [non term 0->state 10]
 From state #5
- [non term 0->state 7]
+ [non term 0->state 9]
 From state #6
+ [non term 0->state 8]
 From state #7
 From state #8
 From state #9
 From state #10
 From state #11
+From state #12
+-----------------------------
+------- CUP v0.11b 20160615 (GIT 4ac7450) Parser Generation Summary -------
+  0 errors and 0 warnings
+  8 terminals, 1 non-terminal, and 6 productions declared, 
+  producing 13 unique parse states.
+  0 terminals declared but not used.
+  0 non-terminals declared but not used.
+  0 productions never reduced.
+  0 conflicts detected (0 expected).
+  Code written to "parser.java", and "sym.java".
+---------------------------------------------------- (CUP v0.11b 20160615 (GIT 4ac7450))
